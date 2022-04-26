@@ -1,0 +1,77 @@
+select * from emp1
+
+select * from emp1 where fname not like '[a-p]%'
+
+select * from emp1 where gender like '__le'
+
+select * from emp1 where fname like 'a____'
+
+select * from emp1 where fname like '%[%]%'
+
+select distinct(dept_n) from emp1
+
+select max(annsal/12) from emp1
+
+select convert(varchar(30),j_date,106) from emp1
+
+select convert(varchar(30),j_date,111) from emp1
+
+select convert(varchar(30),j_date,108) from emp1
+
+select datepart(year,j_date) from emp1
+
+select datepart(day,j_date) from emp1
+
+select fname,getdate()[current date],j_date,datediff(mm,j_date,getdate()) as 
+[total months] from emp1
+
+select * from  emp1 where datepart(yyyy,j_date)='2013'
+
+select * from  emp1 where datepart(mm,j_date)='1'
+
+select * from  emp1 where j_date between '2013-1-01' and '2013-12-01'
+
+select fname,case when gender ='male' then 'm' when gender = 'female'
+then 'f' end as gender from emp1
+
+sp_help emp1
+
+create table project_detail(pdid int identity,eid int foreign key references emp1(eid),project varchar(50))
+
+select * from project_detail
+
+insert into project_detail values
+(1,'task track'),
+(1,'clp'),
+(1,'survey mangment'),
+(2,'hr mangment'),
+(3,'task track'),
+(3,'grs'),
+(3,'dds'),
+(4,'hr mangment'),
+(6,'gl mangment')
+
+select fname,project from emp1 a inner join project_detail b on a.eid=b.eid order by fname
+
+select fname,project from emp1 a  left outer join project_detail b on a.eid=b.eid order by fname
+
+select fname,isnull(project,'not project assign')from emp1 a left outer join project_detail b on a.eid=b.eid order by fname
+
+select fname,project from emp1 a right outer join project_detail b on a.eid=b.eid order by fname
+
+select fname,project from emp1 a full outer join project_detail b on a.eid=b.eid order by fname
+
+select project as project_name from emp1 a right outer join project_detail b on a.eid=b.eid where fname is null 
+
+select fname,isnull(project,'not project assign') as project_name from emp1 a left outer join project_detail b on a.eid=b.eid where project is null 
+
+select e.eid,fname,project from emp1 e inner join project_detail p on e.eid=p.eid where e.eid in (select eid from project_detail group by eid having count(*)>1)
+
+select p.project ,e.fname from project_detail p inner join emp1 e on p.eid=e.eid where p.project in(select project from project_detail group by project having count(1)>1)
+
+
+
+
+
+
+
